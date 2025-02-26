@@ -16,7 +16,7 @@ class TicTacToe:
                     continue
                 if self.board[row, col] == 0:
                     self.board[row, col] = player
-                    print(f"Player {player} placed at ({row+1}, {col+1})")
+                    #print(f"Player {player} placed at ({row+1}, {col+1})")
                     break
                 else:
                     print("Spot taken, try again")
@@ -34,15 +34,15 @@ class TicTacToe:
         return [(row, col) for row in range(self.dim) for col in range(self.dim) if self.board[row, col] == 0]
 
     def evaluate_board_win(self):
-        for row in range(self.dim):                     #check rows for win
+        for row in range(self.dim):                     # this loop checks for row wins
             if abs(sum(self.board[row])) == self.dim:
                 return np.sign(sum(self.board[row]))
             
-        for col in range(self.dim):                     #check columns for win
+        for col in range(self.dim):                     # this loop for colum wins
             if abs(sum(self.board[:, col])) == self.dim:
                 return np.sign(sum(self.board[:, col]))
             
-        if abs(sum(self.board.diagonal())) == self.dim: #check diagonal for win
+        if abs(sum(self.board.diagonal())) == self.dim: # this check for diagnoal wins
             return np.sign(sum(self.board.diagonal()))
         
         if abs(sum(np.fliplr(self.board).diagonal())) == self.dim:  #other diagonal

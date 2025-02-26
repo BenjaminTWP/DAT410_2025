@@ -5,37 +5,37 @@ from TicTacToe import TicTacToe
 
 class MCTSNode:
     def __init__(self, state, parent=None):
-        self.untried_moves = state.get_allowed_moves()
-        self.state = state # instance of the game 
+        self.moves_not_tested = state.get_allowed_moves()
+        self.state = state # a current instance of the game
         self.parent = parent
         self.node_score = 0
         self.children = []
         self.visits = 0
         
     def is_fully_expanded(self):
-        return len(self.untried_moves) == 0
+        return len(self.moves_not_tested) == 0
 
     def find_best_child(self, exploration_weight=11.5):
         best_child = None
-        best_value = -float("inf")
+        best_node_score = -float("inf")
 
         for child in self.children:
-            exploitation = child.node_score / (child.visits + 1e-6)
-            exploration = exploration_weight * math.sqrt(math.log(self.visits + 1) / (child.visits + 1e-6))
+            exploitation = child.node_score / (child.visits + 0.000001)
+            exploration = exploration_weight * math.sqrt(math.log(self.visits + 1) / (child.visits + 0.000001))
             score = exploitation + exploration
 
-            if score > best_value:
-                best_value = score
+            if score > best_node_score:
+                best_node_score = score
                 best_child = child
         
         return best_child
     
     def expand(self):
-        if self.untried_moves:
-            move = self.untried_moves.pop()  #take a move
+        if self.moves_not_tested:
+            move = self.moves_not_tested.pop() 
             new_state = TicTacToe()           
             new_state.board = np.copy(self.state.board)
-            new_state.place_checker(1, move[0], move[1])  #apply the move
+            new_state.place_checker(1, move[0], move[1])  
             child_node = MCTSNode(new_state, parent=self) 
             self.children.append(child_node)
             return child_node
@@ -48,7 +48,7 @@ class MCTSNode:
             self.parent.backpropagate(-result)
 
 
-def simulate_random_playout(state):
+def simulate_random_playout_from_state(state):
     current_player = 1
     while not state.is_full() and state.evaluate_board_win() == 0:
         possible_moves = state.get_allowed_moves()
@@ -67,10 +67,12 @@ def mcts_search(root, iterations=20000, explor_w=11.5):
         if not node.is_fully_expanded():
             node = node.expand()
         
-        result = simulate_random_playout(node.state)
+        result = simulate_random_playout_from_state(node.state)
         node.backpropagate(result)
     
-    return root.find_best_child(exploration_weight=explor_w).state
+    best_child_found = root.find_best_child(exploration_weight=explor_w)
+    
+    return best_child_found.state
 
 
 def best_mcts_move(board, explore_weight=11.5):
