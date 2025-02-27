@@ -33,7 +33,7 @@ class MCTSNode:
     def expand(self):
         if self.moves_not_tested:
             move = self.moves_not_tested.pop() 
-            new_state = TicTacToe()           
+            new_state = TicTacToe(self.state.dim)           
             new_state.board = np.copy(self.state.board)
             new_state.place_checker(1, move[0], move[1])  
             child_node = MCTSNode(new_state, parent=self) 
@@ -52,6 +52,8 @@ def simulate_random_playout_from_state(state):
     current_player = 1
     while not state.is_full() and state.evaluate_board_win() == 0:
         possible_moves = state.get_allowed_moves()
+        if not possible_moves:
+            break
         move = random.choice(possible_moves)
         state.place_checker(current_player, move[0], move[1])
         current_player *= -1
@@ -104,7 +106,7 @@ def best_mcts_move(board, explore_weight=11.5):
 
 
 def play_game(weight):
-    game = TicTacToe(3)
+    game = TicTacToe(4)
     human_player = -1
     ai_player = 1
     
