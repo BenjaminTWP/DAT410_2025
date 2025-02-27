@@ -16,7 +16,6 @@ class TicTacToe:
                     continue
                 if self.board[row, col] == 0:
                     self.board[row, col] = player
-                    #print(f"Player {player} placed at ({row+1}, {col+1})")
                     break
                 else:
                     print("Spot taken, try again")
@@ -31,21 +30,25 @@ class TicTacToe:
                 if self.board[row, col] == 0:
                     allowed_moves.append((row,col))
 
-        return [(row, col) for row in range(self.dim) for col in range(self.dim) if self.board[row, col] == 0]
+        return allowed_moves
 
     def evaluate_board_win(self):
-        for row in range(self.dim):                     # this loop checks for row wins
+        # this loop checks for row wins
+        for row in range(self.dim):                     
             if abs(sum(self.board[row])) == self.dim:
                 return np.sign(sum(self.board[row]))
             
-        for col in range(self.dim):                     # this loop for colum wins
+        # this loop for colum wins 
+        for col in range(self.dim):                     
             if abs(sum(self.board[:, col])) == self.dim:
                 return np.sign(sum(self.board[:, col]))
             
-        if abs(sum(self.board.diagonal())) == self.dim: # this check for diagnoal wins
+        # this check for diagnoal wins
+        if abs(sum(self.board.diagonal())) == self.dim: 
             return np.sign(sum(self.board.diagonal()))
-        
-        if abs(sum(np.fliplr(self.board).diagonal())) == self.dim:  #other diagonal
+
+        #other diagonal 
+        if abs(sum(np.fliplr(self.board).diagonal())) == self.dim:  
             return np.sign(sum(np.fliplr(self.board).diagonal()))
         
         return 0  
@@ -82,11 +85,9 @@ if __name__ == "__main__":
     winner = game.evaluate_board_win()
     
     if winner == -1:
-        print(f"Player -1 wins the game")
+        print("Player -1 wins the game")
         
     elif winner == 1:
-        print(f"Player 1 wins the game")
+        print("Player 1 wins the game")
     else:
         print("Draw")
-
-

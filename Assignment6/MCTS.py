@@ -1,7 +1,8 @@
+from TicTacToe import TicTacToe
 import numpy as np
 import random
 import math
-from TicTacToe import TicTacToe
+
 
 class MCTSNode:
     def __init__(self, state, parent=None):
@@ -15,7 +16,7 @@ class MCTSNode:
     def is_fully_expanded(self):
         return len(self.moves_not_tested) == 0
 
-    def find_best_child(self, exploration_weight=11.5):
+    def UCB_Selection(self, exploration_weight=11.5):
         best_child = None
         best_node_score = -float("inf")
 
@@ -45,7 +46,8 @@ class MCTSNode:
         self.visits += 1
         self.node_score += result
         if self.parent != None:
-            self.parent.backpropagate(-result)
+            result*=-1
+            self.parent.backpropagate(result)
 
 
 def simulate_random_playout_from_state(state):
@@ -64,7 +66,7 @@ def mcts_search(root, iterations=20000, explor_w=11.5):
     for _ in range(iterations):
         node = root
         while node.is_fully_expanded() and node.children:
-            node = node.find_best_child()
+            node = node.UCB_Selection()
         
         if not node.is_fully_expanded():
             node = node.expand()
@@ -72,7 +74,7 @@ def mcts_search(root, iterations=20000, explor_w=11.5):
         result = simulate_random_playout_from_state(node.state)
         node.backpropagate(result)
     
-    best_child_found = root.find_best_child(exploration_weight=explor_w)
+    best_child_found = root.UCB_Selection(exploration_weight=explor_w)
     
     return best_child_found.state
 
@@ -81,11 +83,11 @@ def best_mcts_move(board, explore_weight=11.5):
 
     # before doing any sort of search, try to find moves
     # that oculd either end up into a direct loss or direct win
-    winning_move = board.find_winning_move(1)
+    winning_move = board.find_winning_move(player=1)
     if winning_move != None:
         return winning_move
     
-    blocking_move = board.find_winning_move(-1)
+    blocking_move = board.find_winning_move(player=-1)
     if blocking_move != None:
         return blocking_move
     
@@ -105,8 +107,8 @@ def best_mcts_move(board, explore_weight=11.5):
         None
 
 
-def play_game(weight):
-    game = TicTacToe(4)
+def play_game(board_size, weight):
+    game = TicTacToe(board_size)
     human_player = -1
     ai_player = 1
     
@@ -137,4 +139,5 @@ def play_game(weight):
         print("It's a draw!")
 
 if __name__ == "__main__":
-    play_game(11.5)
+    board_size = int(input("Enter board size:"))
+    play_game(board_size = board_size, weight=11.5)
