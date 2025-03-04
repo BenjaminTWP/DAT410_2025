@@ -1,0 +1,51 @@
+{
+"weather": {
+        "monday": "18 degrees C and rain",
+        "tuesday": "20 degrees C but cloudy",
+        "wednesday": "sunny and 23 degrees C",
+        "thursday": "partly cloudy, 22 degrees C",
+        "friday": "Thunderstorms, 15 degrees C, watch out!",
+        "saturday": "cloudy, 19 degrees C",
+        "sunday": "windy, 18 degrees C"
+    },
+"restaurants": {
+        "italian": "La Gondola Trattoria",
+        "sushi": "The Sushi",
+        "fast food": "Sjuans Gatukök",
+        "vegan": "BlackBird",
+        "indian": "Gandhi Mahal",
+        "mexican": "Mercado Mexico"
+    },
+"bus_tram": {
+        "morning": {
+            "centralstationen": {
+                "korsvagen": "8:30 AM",
+                "chalmers": "9:00 AM"
+            },
+            "chalmers": {
+                "centralstationen": "7:45 AM",
+                "korsvagen": "8:10 AM"
+            }
+        },
+        "lunch": {
+            "centralstationen": {
+                "korsvagen": "12:15 PM",
+                "chalmers": "12:45 PM"
+            },
+            "chalmers": {
+                "centralstationen": "11:50 AM",
+                "korsvagen": "12:30 PM"
+            }
+        },
+        "afternoon": {
+            "centralstationen": {
+                "korsvagen": "4:45 PM",
+                "chalmers": "5:20 PM"
+            },
+            "chalmers": {
+                "centralstationen": "4:00 PM",
+                "korsvagen": "4:30 PM"
+            }
+        }
+    }
+}
