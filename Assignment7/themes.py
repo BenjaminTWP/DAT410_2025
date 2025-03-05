@@ -10,7 +10,7 @@ class Theme:
     def first(self, input_list):
         pass
     def is_complete(self):
-        return False
+        pass
     def process_follow_up(self, user_input):
         pass
 
@@ -49,7 +49,7 @@ class WeatherForecast(Theme):
                 return
         print("[Dialogue System] I didn't quite catch the day. Could you clarify what weekday (monday-sunday) you meant?")
 
-class BookRestaurant(Theme):
+class FindRestaurant(Theme):
     def __init__(self, data):
         super().__init__()
         self.matching_words = {"restaurant": 1, "food": 0.9, "eat": 0.5, "booking": 0.5}
@@ -85,7 +85,7 @@ class BookRestaurant(Theme):
                 self.FRAME_cuisine = word
                 self.recommend_restaurant()
                 return
-        print("[Dialogue System] I didn't catch the cuisine. Could you clarify?")
+        print("[Dialogue System] I didn't catch the cuisine. Could you clarify what cuisine you are interested in?")
 
     def recommend_restaurant(self):
         restaurant_choice = self.data.get(self.FRAME_cuisine, None)
@@ -99,7 +99,7 @@ class BookRestaurant(Theme):
                 print(f"[Dialogue System] I recommend {restaurant_choice}.")
             self.complete = True
         else:
-            print("[Dialogue System] No restaurant found for that cuisine.")
+            print("[Dialogue System] I could not find a restaurant found for that cuisine.")
 
 class BusTram(Theme):
     def __init__(self, data):
@@ -108,7 +108,7 @@ class BusTram(Theme):
         self.data = data.get("bus_tram", {})
         self.FRAME_from = None
         self.FRAME_to = None
-        self.FRAME_time = None  # morning, lunch, afternoon
+        self.FRAME_time = None  # "morning", "lunch", "afternoon"
         self.complete = False
 
         self.possible_stops = {"centralstationen", "chalmers", "korsvagen"}
@@ -126,7 +126,6 @@ class BusTram(Theme):
         # we find the possible bus/tram stop
         found_stops = [token for token in tokens if token in self.possible_stops]
         if found_stops:
-            
             if not self.FRAME_from:
                 self.FRAME_from = found_stops[0]
 

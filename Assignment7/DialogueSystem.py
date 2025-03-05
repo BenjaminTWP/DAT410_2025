@@ -17,7 +17,7 @@ data = load_data()
 
 def get_theme(input_list):
     # To extend the program, add the new class to this list of themes
-    themes = [WeatherForecast(data), BusTram(data), BookRestaurant(data)]
+    themes = [WeatherForecast(data), BusTram(data), FindRestaurant(data)]
     # we return the theme with the highest score given first input
     return max(themes, key=lambda theme: theme.calculate_score(input_list))
 
